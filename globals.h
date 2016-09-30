@@ -20,7 +20,7 @@ extern
 #ifndef MAIN
 extern
 #endif
-	double ***x, ***real_x;   
+	double ***x, ***real_x, ***com, **rg, **re;   
 
 // Time step size
 #ifndef MAIN
