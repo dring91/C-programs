@@ -10,17 +10,13 @@
 // declare globals:
 //  boxh, x, N, frs, real_x
 int frs, N, nch, chl, *t;
-double ***x, ***com, **rg, **re;
+double ***x, ***com; 
+double **rg, **re;
 
 int main(int argc, char *argv[]) {
-  // array sizes:
-  // sizeof(double) = 8
-  // sizeof(boxh) = 6*5*8 = 240 b
-  // sizeof(x) = 3*20,000*5*8 = 2,400,000 b = 2.3 mb
-  // sizeof(real_x) = 3*20,000*5*8 = 2,400,000 b = 2.3 mb
 
   // setup the input file
-  FILE *COM_RG_RE;
+  FILE *FOUT;
   const char *filename = argv[1];
   const char *filename_out = argv[2];
   frs = atoi(argv[3]);
@@ -40,37 +36,51 @@ int main(int argc, char *argv[]) {
 
   // read in the data
   read_dump(filename);
+  printf("File read\n");
 
   // unwrap coordinates
   // unwrap();
 
   // calculate the com
   calc_com();
+  printf("calculated COM\n");
+  fflush(stdout);
   calc_rg();
+  printf("calculated RG\n");
+  fflush(stdout);
   calc_re();
+  printf("calculated RE\n");
+  fflush(stdout);
 
 	/********************************************************/
-	COM_RG_RE = fopen(filename_out, "w");
-	if (COM_RG_RE == NULL) {
+	FOUT = fopen(filename_out, "w");
+	if (FOUT == NULL) {
 		fprintf(stderr, "Failed to open data.out\n");
 		exit(1);
 	}
 
   int i;
 	for (f=0; f<frs; f++) {
-    fprintf(COM_RG_RE, "#   time     com_x      com_y        com_z      rg       re\n");
+    fprintf(FOUT, "#   time     com_x      com_y        com_z      rg       re\n");
+    fflush(FOUT);
     for (i=0; i<nch; i++) {
-		  fprintf(COM_RG_RE, "%10d  %20.10f  %20.10f  %20.10f  %20.10f  %20.10f\n", \
-                    t[f], com[f][i][0], com[f][i][1], com[f][i][2], rg[f][i], re[f][i]);
+		  fprintf(FOUT, "%8d  ", t[f]);
+		  fprintf(FOUT, "%20.10f  %20.10f  %20.10f  ", com[f][i][0], com[f][i][1], com[f][i][2]);
+		  fprintf(FOUT, "%20.10f  ", rg[f][i]);
+		  fprintf(FOUT, "%20.10f\n", re[f][i]);
     }
-    fprintf(COM_RG_RE, "\n\n");
+    fprintf(FOUT, "\n\n");
+    fflush(FOUT);
 	}
 
-	fclose(COM_RG_RE);
+	fclose(FOUT);
   /********************************************************/
 
   free(x);
   free(t);
+  free(com);
+  free(rg);
+  free(re);
 
   return 0;
 

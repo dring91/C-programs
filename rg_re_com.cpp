@@ -44,8 +44,6 @@ void calc_com() {
       }
     }
   }
-
-  free(com);
 }
 
 void calc_rg() {
@@ -53,7 +51,6 @@ void calc_rg() {
   int f, i, j, k, d;
 
   // Allocate memory for RG
-  double **rg;
   rg = (double**)calloc(frs,sizeof(double*));
   for (f=0; f<frs; f++)
     rg[f] = (double*)calloc(nch,sizeof(double));
@@ -66,23 +63,22 @@ void calc_rg() {
     // i*nch+j = atomid
     for (i=0; i<nch; i++) {
       // loop over the atoms in each chain twice
-      for (j=0; j<chl; j++) {
-        for (k=j; k<chl+1; k++) {
-          rg[f][i] += (sq(x[f][i*nch+j][0] - x[f][i*nch+k][0]) \
-                   +   sq(x[f][i*nch+j][1] - x[f][i*nch+k][2]) \
-                   +   sq(x[f][i*nch+j][2] - x[f][i*nch+k][1])) / sq(chl);
+      for (j=0; j<chl-1; j++) {
+        for (k=j+1; k<chl; k++) {
+          rg[f][i] += (sq(x[f][i*chl+j][0] - x[f][i*chl+k][0]) \
+                   +   sq(x[f][i*chl+j][1] - x[f][i*chl+k][1]) \
+                   +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
         }
       }
+      rg[f][i] = sqrt(rg[f][i]);
     }
   }
-
 }
 
 void calc_re() {
 
   int f, i, j, k, d;
   // Allocate memory for RE
-  double **re;
   re = (double**)calloc(frs,sizeof(double*));
   for (f=0; f<frs; f++)
     re[f] = (double*)calloc(nch,sizeof(double));
@@ -105,5 +101,4 @@ void calc_re() {
       re[f][i] = sqrt(re[f][i]);
     }
   }
-
 }
