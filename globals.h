@@ -20,7 +20,7 @@ extern
 #ifndef MAIN
 extern
 #endif
-	double ***x, ***real_x, ***com; 
+	double ***x, ***real_x, ***com, ***bonds; 
 
 #ifndef MAIN
 extern

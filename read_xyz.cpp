@@ -25,6 +25,8 @@ void read_dump(const char *filename) {
 		fprintf(stderr, "Failed to open dump.xyz\n");
 		exit(1);
 	}
+
+  t = (int*)calloc(frs,sizeof(double));
 	
 	for (f=0; f<frs; f++) {
 		// ignore the first two lines of dump.xyz

@@ -18,7 +18,7 @@
 
 void msd_time(const char *filename, float frac) {
     int i, j, f;
-    double *t, *msd, r2_sum, dr[3];
+    double *msd, r2_sum, dr[3];
     FILE *MSD;
 
     // Define time origin shift related parameters
@@ -31,9 +31,7 @@ void msd_time(const char *filename, float frac) {
     /********************************************************/
     // Allocate memory and initialize r2, t, and D
     msd = (double*)calloc((ff), sizeof(double));
-    t = (double*)calloc((ff), sizeof(double));
     for (f=0; f<(ff); f++) {
-        t[f] = 0.0;
         msd[f] = 0.0;
     }
 
@@ -65,9 +63,9 @@ void msd_time(const char *filename, float frac) {
 		exit(1);
 	}
 	// calculate t //FIXME input correct time step here!!!
-	for (f=0; f<(ff); f++) {
-		t[f] = f*10000; //Each frame represents 200,000 time steps
-	}
+	// for (f=0; f<(ff); f++) {
+	// 	t[f] = f*10000; //Each frame represents 200,000 time steps
+	// }
 	// Write t and r2 in file, skip t = 0, msd = 0 point
 	for (f=1; f<(ff); f++) {
 		fprintf(MSD, "%20.10f  %20.10f\n", t[f], msd[f]);

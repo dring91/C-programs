@@ -12,6 +12,7 @@
 int frs;
 int N;
 double ***x;
+int *t;
 
 int main(int argc, char *argv[]) {
   // array sizes:
@@ -37,12 +38,16 @@ int main(int argc, char *argv[]) {
 
   // read in the data
   read_dump(filename);
+  printf("File read\n");
+  fflush(stdout);
 
   // unwrap the trajectory
   //unwrap_trajectory();
   
   // calculate the msd
   msd_time(filename_out,frac);
+  printf("msd calculated\n");
+  fflush(stdout);
 
   //free(boxh);
   free(x);

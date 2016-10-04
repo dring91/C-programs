@@ -91,12 +91,10 @@ void calc_re() {
     // i*nch+j = atomid
     for (i=0; i<nch; i++) {
       // loop over the atoms in each chain twice
-      for (j=0; j<chl; j++) {
-        for (k=0; k<chl; k++) {
-          re[f][i] += (x[f][i*chl+j][0]*x[f][i*chl+k][0] \
-                   +   x[f][i*chl+j][1]*x[f][i*chl+k][1] \
-                   +   x[f][i*chl+j][2]*x[f][i*chl+k][2])  / sq(chl);
-        }
+      for (j=0; j<chl-1; j++) {
+        re[f][i] += (sq(bonds[f][i*(chl-1)+j][0]) \
+                 +   sq(bonds[f][i*(chl-1)+j][1]) \
+                 +   sq(bonds[f][i*(chl-1)+j][2]))  / sq(chl-1);
       }
       re[f][i] = sqrt(re[f][i]);
     }
