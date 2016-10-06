@@ -68,7 +68,7 @@ void msd_time(const char *filename, float frac) {
 	// }
 	// Write t and r2 in file, skip t = 0, msd = 0 point
 	for (f=1; f<(ff); f++) {
-		fprintf(MSD, "%20.10f  %20.10f\n", t[f], msd[f]);
+		fprintf(MSD, "%d  %20.10f\n", t[f], msd[f]);
 	}
 	fclose(MSD);
 
