@@ -3,13 +3,13 @@
  */
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 
 #include "globals.h"
 #include "functions.h"
 
 // declare globals:
-//  boxh, x, N, frs, real_x
-int frs, N, nch, chl, *t;
+int frs, N, nch, chl, nbond, *t;
 double ***x, ***com, ***bonds; 
 double **rg, **re;
 
@@ -23,8 +23,7 @@ int main(int argc, char *argv[]) {
   N = atoi(argv[4]);
   chl = atoi(argv[5]);
   nch = N/chl;
-  int nbond = nch*(chl-1);
-  printf("%d, %d\n",nch,nbond);
+  nbond = nch*(chl-1);
 
   t = (int*)calloc(frs,sizeof(int));
 
@@ -45,11 +44,7 @@ int main(int argc, char *argv[]) {
 
   // read in the data
   read_dump(filename);
-  printf("File read\n");
 
-  // unwrap coordinates
-  // unwrap();
-  
   // Generate bond vectors for each polymer
   int i,j;
   for (f=0; f<frs; f++) {
@@ -64,14 +59,9 @@ int main(int argc, char *argv[]) {
 
   // calculate the com
   calc_com();
-  printf("calculated COM\n");
-  fflush(stdout);
   calc_rg();
-  printf("calculated RG\n");
-  fflush(stdout);
-  calc_re();
-  printf("calculated RE\n");
-  fflush(stdout);
+  //calc_re();
+  ave_re();
 
 	/********************************************************/
 	FOUT = fopen(filename_out, "w");
@@ -86,8 +76,8 @@ int main(int argc, char *argv[]) {
     for (i=0; i<nch; i++) {
 		  fprintf(FOUT, "%8d  ", t[f]);
 		  fprintf(FOUT, "%20.10f  %20.10f  %20.10f  ", com[f][i][0], com[f][i][1], com[f][i][2]);
-		  fprintf(FOUT, "%20.10f  ", rg[f][i]);
-		  fprintf(FOUT, "%20.10f\n", re[f][i]);
+		  fprintf(FOUT, "%20.10f  ", sqrt(rg[f][i]));
+		  fprintf(FOUT, "%20.10f\n", sqrt(re[f][0]));
     }
     fprintf(FOUT, "\n\n");
     fflush(FOUT);

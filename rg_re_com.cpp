@@ -70,33 +70,56 @@ void calc_rg() {
                    +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
         }
       }
-      rg[f][i] = sqrt(rg[f][i]);
+      //rg[f][i] = sqrt(rg[f][i]);
     }
   }
 }
 
-void calc_re() {
+//void calc_re() {
+//
+//  int f, i, j, k, d;
+//  // Allocate memory for RE
+//  re = (double***)calloc(frs,sizeof(double**));
+//  for (f=0; f<frs; f++) {
+//    re[f] = (double**)calloc(nch,sizeof(double*));
+//    for (i=0; i<nch; i++)
+//      re[f][i] = (double*)calloc(3,sizeof(double));
+//  }
+//
+//  // Calculate RG
+//  // loop over each frame
+//  for (f=0; f<frs; f++) {
+//    // loop over number of chains
+//    // nch * chl = N
+//    // i*nch+j = atomid
+//    for (i=0; i<nch; i++) {
+//      // loop over the atoms in each chain twice
+//      for (j=0; j<chl-1; j++) {
+//        re[f][i][0] += bonds[f][i*(chl-1)+j][0];
+//        re[f][i][1] += bonds[f][i*(chl-1)+j][1];
+//        re[f][i][2] += bonds[f][i*(chl-1)+j][2];
+//      }
+//      re[f][i][0] = sq(re[f][i][0]) + sq(re[f][i][1]) + sq(re[f][i][2]);
+//    }
+//  }
+//}
 
-  int f, i, j, k, d;
+void ave_re() {
+
+  int f, i;
   // Allocate memory for RE
   re = (double**)calloc(frs,sizeof(double*));
   for (f=0; f<frs; f++)
-    re[f] = (double*)calloc(nch,sizeof(double));
+    re[f] = (double*)calloc(3,sizeof(double));
 
   // Calculate RG
   // loop over each frame
   for (f=0; f<frs; f++) {
-    // loop over number of chains
-    // nch * chl = N
-    // i*nch+j = atomid
-    for (i=0; i<nch; i++) {
-      // loop over the atoms in each chain twice
-      for (j=0; j<chl-1; j++) {
-        re[f][i] += (sq(bonds[f][i*(chl-1)+j][0]) \
-                 +   sq(bonds[f][i*(chl-1)+j][1]) \
-                 +   sq(bonds[f][i*(chl-1)+j][2]))  / sq(chl-1);
-      }
-      re[f][i] = sqrt(re[f][i]);
+    for (i=0; i<nbond; i++) {
+      re[f][0] += bonds[f][i][0];
+      re[f][1] += bonds[f][i][1];
+      re[f][2] += bonds[f][i][2];
     }
+    re[f][0] = sq(re[f][0]/nch) + sq(re[f][1]/nch) + sq(re[f][2]/nch);
   }
 }

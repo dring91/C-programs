@@ -14,7 +14,7 @@ extern
 #ifndef MAIN
 extern 
 #endif
-	int N, nch, chl;
+	int N, nch, chl, nbond;
 
 // Frame number and position stored in one 3D array
 #ifndef MAIN
