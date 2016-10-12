@@ -46,32 +46,56 @@ void calc_com() {
   }
 }
 
-void calc_rg() {
+//void calc_rg() {
+//
+//  int f, i, j, k, d;
+//
+//  // Allocate memory for RG
+//  rg = (double**)calloc(frs,sizeof(double*));
+//  for (f=0; f<frs; f++)
+//    rg[f] = (double*)calloc(nch,sizeof(double));
+//
+//  // Calculate RG
+//  // loop over each frame
+//  for (f=0; f<frs; f++) {
+//    // loop over number of chains
+//    // nch * chl = N
+//    // i*nch+j = atomid
+//    for (i=0; i<nch; i++) {
+//      // loop over the atoms in each chain twice
+//      for (j=0; j<chl-1; j++) {
+//        for (k=j+1; k<chl; k++) {
+//          rg[f][i] += (sq(x[f][i*chl+j][0] - x[f][i*chl+k][0]) \
+//                   +   sq(x[f][i*chl+j][1] - x[f][i*chl+k][1]) \
+//                   +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
+//        }
+//      }
+//    }
+//  }
+//}
+
+void ave_rg() {
 
   int f, i, j, k, d;
 
   // Allocate memory for RG
-  rg = (double**)calloc(frs,sizeof(double*));
-  for (f=0; f<frs; f++)
-    rg[f] = (double*)calloc(nch,sizeof(double));
+  rg = (double*)calloc(frs,sizeof(double));
 
   // Calculate RG
   // loop over each frame
   for (f=0; f<frs; f++) {
     // loop over number of chains
-    // nch * chl = N
-    // i*nch+j = atomid
     for (i=0; i<nch; i++) {
       // loop over the atoms in each chain twice
       for (j=0; j<chl-1; j++) {
         for (k=j+1; k<chl; k++) {
-          rg[f][i] += (sq(x[f][i*chl+j][0] - x[f][i*chl+k][0]) \
-                   +   sq(x[f][i*chl+j][1] - x[f][i*chl+k][1]) \
-                   +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
+          rg[f] += (sq(x[f][i*chl+j][0] - x[f][i*chl+k][0]) \
+                +   sq(x[f][i*chl+j][1] - x[f][i*chl+k][1]) \
+                +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
         }
       }
-      //rg[f][i] = sqrt(rg[f][i]);
     }
+    rg[f] = rg[f] / nch;
   }
 }
 
@@ -110,7 +134,7 @@ void ave_re() {
   // Allocate memory for RE
   re = (double**)calloc(frs,sizeof(double*));
   for (f=0; f<frs; f++)
-    re[f] = (double*)calloc(3,sizeof(double));
+    re[f]=(double*)calloc(3,sizeof(double));
 
   // Calculate RG
   // loop over each frame

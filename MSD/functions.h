@@ -4,9 +4,5 @@
  */
 
 void read_dump(const char* filename);
-void calc_com();
-void calc_rg();
-void calc_re();
-void ave_re();
-// void msd_time(const char *filename, float frac);
+void msd_time(const char *filename, float frac);
 int main(int argc, char *argv[]);

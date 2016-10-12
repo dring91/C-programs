@@ -25,7 +25,7 @@ extern
 #ifndef MAIN
 extern
 #endif
-  double **rg, **re;   
+  double *rg, **re, ***box;
 
 // Time step size
 #ifndef MAIN
