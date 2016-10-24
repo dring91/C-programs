@@ -14,18 +14,18 @@ extern
 #ifndef MAIN
 extern 
 #endif
-	int res, N, nch, chl, nbond;
+	int N, nch, chl, nbond;
 
 // Frame number and position stored in one 3D array
 #ifndef MAIN
 extern
 #endif
-	double ***x, ***real_x, ***com, ***bonds; 
+	double ***x, ***real_x, ***positions, **bonds; 
 
 #ifndef MAIN
 extern
 #endif
-  double **prg, **pre, **rg, ***re, ***box;
+  double ***box;
 
 // Time step size
 #ifndef MAIN

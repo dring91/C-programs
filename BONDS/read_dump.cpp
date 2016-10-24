@@ -44,10 +44,12 @@ void read_dump(const char *filename) {
     fgets(dummyline, 200, input);
     // read the timestep
     fscanf(input, "%d\n", &t[f]);
+    printf("%d\n", t[f]);
 		// ignore the next 3 lines
     fgets(dummyline, 200, input);
     // read the number of atoms
     fscanf(input, "%d\n", &N);
+    printf("%d\n", N);
 		// Read and store the box size at each time frame
     fgets(dummyline, 200, input);
 		for (i=0; i<3; i++) {
@@ -55,6 +57,7 @@ void read_dump(const char *filename) {
 		}
 		// Read another line and ignore
 		fgets(dummyline, 200, input);
+    printf("%s\n", dummyline);
 		// Read and store the x y z positions of each particle 
 		// rearrange them so the position matrix start with 
 		// particle 1, 2, ... N

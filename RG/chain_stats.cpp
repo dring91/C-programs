@@ -9,9 +9,9 @@
 #include "functions.h"
 
 // declare globals:
-int frs, N, nch, chl, nbond, *t;
-double ***x, ***com, ***bonds; 
-double *rg, **re, ***box;
+int res, frs, N, nch, chl, nbond, *t;
+double ***x, **prg, **pre, ***bonds; 
+double **rg, ***re, ***box;
 
 int main(int argc, char *argv[]) {
 
@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
   chl = atoi(argv[5]);
   nch = N/chl;
   nbond = nch*(chl-1);
+  res = atoi(argv[6]);
 
   int f,n;
   x = (double***)calloc(frs,sizeof(double**));
@@ -38,8 +39,6 @@ int main(int argc, char *argv[]) {
 
   // read in the data
   read_dump(filename);
-  printf("input file read\n");
-  fflush(stdout);
 
   int i,j;
   for (f=0; f<frs; f++) {
@@ -52,29 +51,27 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  printf("bond vectors calculated\n");
-  fflush(stdout);
 
   // unwrap the polymers
-  // unwrap();
-  // printf("trajectory molecules unwrapped\n");
-  // fflush(stdout);
+  printf("unwrapping coordinates\n");
+  unwrap();
 
-  // calculate the com
-  //calc_com();
-  //calc_rg();
-  //calc_re();
-  ave_rg();
-  ave_re();
+  // calculate RG and RE histograms
+  printf("calculating rg\n");
+  hist_rg();
+  printf("calculating re\n");
+  fflush(stdout);
+  hist_re();
 
   // write_traj("unwrapped_traj.lammpstrj");
   write_data(filename_out);
 
-  free(x);
   free(t);
-  free(com);
+  free(x);
   free(rg);
   free(re);
+  free(pre);
+  free(prg);
   free(bonds);
 
   return 0;

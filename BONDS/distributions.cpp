@@ -21,32 +21,42 @@ double sq(double x) {
   return x*x;
 }
 
-//void calc_com() {
-//  int f, i, j, d;
-//
-//  /********************************************************/
-//  // Allocate memory and initialize t, com
-//  com = (double***)calloc(frs, sizeof(double**));
-//  for (f=0; f<frs; f++) {
-//    com[f] = (double**)calloc(nch, sizeof(double*));
-//    for (i=0; i<nch; i++)
-//      com[f][i] = (double*)calloc(3, sizeof(double));
-//  }
-//
-//	/********************************************************/
-//  // center of mass
-//  for (f=0; f<frs; f++) {
-//    for (i=0; i<nch; i++) {
-//      for (j=0; j<chl; j++) {
-//        for (d=0; d<3; d++) {
-//          com[f][i][d] += x[f][i*chl+j][d]/chl;
-//        }
-//      }
-//    }
-//  }
-//}
+void hist_com() {
+  int f, i, j, d;
 
-void calc_rg() {
+  // 3d spatial resolution and time resolution
+  /********************************************************/
+  // Allocate memory and initialize t, com
+  com = (double***)calloc(frs, sizeof(double**));
+  for (f=0; f<frs; f++) {
+    com[f] = (double**)calloc(nch, sizeof(double*));
+    for (i=0; i<nch; i++)
+      com[f][i] = (double*)calloc(3, sizeof(double));
+  }
+
+  int res = 10;
+  double *z = (double*)calloc(res, sizeof(double));
+  for (i=0; i<res; i++) {
+    z[i] = i*length+minimum;
+  }
+  hist = (double**)calloc(frs, sizeof(double*));
+  for (f=0; f<frs; f++)
+    hist[f] = (double*)calloc(res, sizeof(double));
+
+	/********************************************************/
+  // center of mass
+  for (f=0; f<frs; f++) {
+    for (i=0; i<nch; i++) {
+      for (j=0; j<chl; j++) {
+        for (d=0; d<3; d++) {
+          com[f][i][d] += x[f][i*chl+j][d]/chl;
+        }
+      }
+    }
+  }
+}
+
+void hist_rg() {
 
   int f, i, j, k, d;
 
@@ -74,32 +84,7 @@ void calc_rg() {
   }
 }
 
-//void ave_rg() {
-//
-//  int f, i, j, k, d;
-//
-//  // Allocate memory for RG
-//  rg = (double*)calloc(frs,sizeof(double));
-//
-//  // Calculate RG
-//  // loop over each frame
-//  for (f=0; f<frs; f++) {
-//    // loop over number of chains
-//    for (i=0; i<nch; i++) {
-//      // loop over the atoms in each chain twice
-//      for (j=0; j<chl-1; j++) {
-//        for (k=j+1; k<chl; k++) {
-//          rg[f] += (sq(x[f][i*chl+j][0] - x[f][i*chl+k][0]) \
-//                +   sq(x[f][i*chl+j][1] - x[f][i*chl+k][1]) \
-//                +   sq(x[f][i*chl+j][2] - x[f][i*chl+k][2])) / sq(chl);
-//        }
-//      }
-//    }
-//    rg[f] = rg[f] / nch;
-//  }
-//}
-
-void calc_re() {
+void hist_re() {
 
   int f, i, j, k, d;
   // Allocate memory for RE
@@ -127,23 +112,3 @@ void calc_re() {
     }
   }
 }
-
-//void ave_re() {
-//
-//  int f, i;
-//  // Allocate memory for RE
-//  re = (double**)calloc(frs,sizeof(double*));
-//  for (f=0; f<frs; f++)
-//    re[f]=(double*)calloc(3,sizeof(double));
-//
-//  // Calculate RG
-//  // loop over each frame
-//  for (f=0; f<frs; f++) {
-//    for (i=0; i<nbond; i++) {
-//      re[f][0] += bonds[f][i][0];
-//      re[f][1] += bonds[f][i][1];
-//      re[f][2] += bonds[f][i][2];
-//    }
-//    re[f][0] = sq(re[f][0]/nch) + sq(re[f][1]/nch) + sq(re[f][2]/nch);
-//  }
-//}

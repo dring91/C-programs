@@ -48,10 +48,18 @@ void write_data(const char *filename) {
     exit(1);
   }
 
-  int b;
-  fprintf(FOUT, "#   bin        rg\n");
-  for (b=0; b<res; b++) {
-    fprintf(FOUT, "%f %f %f %f\n", prg[b][0], prg[b][1], pre[b][0], pre[b][1]);
+  int f,n;
+  fprintf(FOUT, "#   time        rg         re\n");
+  for (f=0; f<frs; f++) {
+    for (n=0; n<nbond; n++) {
+      fprintf(FOUT, "%8d ", t[f]);
+      fprintf(FOUT, "%8d ", n+1);
+      fprintf(FOUT, "%20.10f ", bonds[f][n]);
+      fprintf(FOUT, "%20.10f ", positions[f][n][0]);
+      fprintf(FOUT, "%20.10f ", positions[f][n][1]);
+      fprintf(FOUT, "%20.10f\n", positions[f][n][2]);
+    }
+    fprintf(FOUT, "\n\n");
   }
 
   fclose(FOUT);
