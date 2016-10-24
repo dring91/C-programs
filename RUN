@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # ./rg
-time ./msd SAMPLE/N_1_traj_box_unwrapped.xyz SAMPLE/msd.out 0.1 250 22335
+time ./msd SAMPLE/N_1_traj_box_unwrapped.xyz SAMPLE/msd.out 0.1 250 22335 1
