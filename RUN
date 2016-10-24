@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# ./rg
+time ./msd SAMPLE/unwrapped_traj.lammpstrj SAMPLE/msd.out 0.1 250 20650

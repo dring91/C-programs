@@ -5,4 +5,7 @@
 *.[oa]
 *.lammpstrj
 SAMPLE/*
+msd
+rg
+blen
 # *~
