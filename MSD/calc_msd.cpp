@@ -9,8 +9,8 @@
 
 // declare globals:
 int frs;
-int N, nch, chl;
-double ***x, ***box;
+int N;
+double ***x;
 int *t;
 
 int main(int argc, char *argv[]) {
@@ -26,9 +26,6 @@ int main(int argc, char *argv[]) {
   frs = atoi(argv[4]);
   // the number of atoms in each frame
   N = atoi(argv[5]);
-  // the length of the chains
-  chl = atoi(argv[6]);
-  nch = N/chl;
 
   int f,n;
   x = (double***)calloc(frs,sizeof(double**));

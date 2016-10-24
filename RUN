@@ -1,8 +1,4 @@
 #!/bin/bash
 
 # ./rg
-<<<<<<< HEAD
-time ./msd SAMPLE/N_1_traj_box_unwrapped.xyz SAMPLE/msd.out 0.1 250 22335 1
-=======
-time ./msd SAMPLE/unwrapped_traj.lammpstrj SAMPLE/msd.out 0.1 250 20650
->>>>>>> parent of 4b65e94... corrected run file
+time ./msd SAMPLE/N_1_traj_box_unwrapped.xyz SAMPLE/msd.out 0.1 250 22335
