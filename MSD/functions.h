@@ -8,5 +8,5 @@ void read_dump(const char *filename);
 // double periodic(double dist, double coord, double L);
 // void write_traj(const char *filename);
 void msd_time(const char *filename, float frac);
-void write_data(const char *filename);
+//void write_data(const char *filename);
 int main(int argc, char *argv[]);
