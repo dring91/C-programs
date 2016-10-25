@@ -35,7 +35,7 @@ void msd_time(const char *filename, float frac) {
         msd[f] = 0.0;
     }
 
-	/********************************************************/
+	  /********************************************************/
     // Outer most loops over different time origins
     for (to=0; to<n_data; to++) {
         // Loop over all the time frames within each time origin set
