@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #time ./msd SAMPLE/N_1_traj_box_unwrapped.xyz SAMPLE/msd.out 0.1 250 22335
-time ./msd simT07/N_5_traj_box_T07_unwrapped.xyz simT07/msd_N5.out 0.1 250 22330
-time ./msd simT07/N_10_traj_box_T07_unwrapped.xyz simT07/msd_N10.out 0.1 250 20790
-time ./msd simT07/N_25_traj_box_T07_unwrapped.xyz simT07/msd_N25.out 0.1 250 20675
+# time ./msd simT07/N_5_traj_box_T07_unwrapped.xyz simT07/msd_N5.out 0.1 250 22330
+# time ./msd simT07/N_10_traj_box_T07_unwrapped.xyz simT07/msd_N10.out 0.1 250 20790
+# time ./msd simT07/N_25_traj_box_T07_unwrapped.xyz simT07/msd_N25.out 0.1 250 20675
+time ./rg SAMPLE/N_25_traj_eps070_1.lammpstrj SAMPLE/rg_N25.out 250 350000 

@@ -18,11 +18,16 @@ int main(int argc, char *argv[]) {
   // setup the input file
   const char *filename = argv[1];
   const char *filename_out = argv[2];
+  // number of frames in trajectory to analyze
   frs = atoi(argv[3]);
+  // total number of polymer atoms
   N = atoi(argv[4]);
+  // number of units to a chain
   chl = atoi(argv[5]);
+  // number of chains in the trajectory
   nch = N/chl;
   nbond = nch*(chl-1);
+  // number of bins in the probability distributions
   res = atoi(argv[6]);
 
   int f,n;
