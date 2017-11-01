@@ -1,22 +1,3 @@
 #!/bin/bash
 
-target=$1
-cd c_prog/$target
-
-# g++ -g calc_msd.cpp -o calc_msd.o -c
-# g++ -g read_xyz.cpp -o read_xyz.o -c
-# g++ -g msd_time.cpp -o msd_time.o -c
-# 
-# g++ -g -pedantic -Wall -Wextra -o msd calc_msd.o read_xyz.o msd_time.o -lm
-# 
-# cp msd ../
-
-# g++ -g chain_stats.cpp -o chain_stats.o -c
-# g++ -g TRAJ/read_xyz.cpp -o TRAJ/read_xyz.o -c
-# g++ -g rg_re_com.cpp -o rg_re_com.o -c
-
-# g++ -g -pedantic -Wall -Wextra -o rg chain_stats.o TRAJ/read_xyz.o rg_re_com.o -lm
-
-cp rg ../
-
-cd ../
+g++ -g -pedantic -Wall -Wextra -o msd calc_msd.cpp -lm
