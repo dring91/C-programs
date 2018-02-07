@@ -23,12 +23,12 @@ void write_data
 }
 
 void read_dump
-  (const char *filename, int frames, int N, int *t, double ***box, double ***x) 
+  (const char *filename, int frames, int N, int *t, int **types, double ***box, double ***x) 
 {
   int d = 3;
 	int f, i, id;
-	double dummy;
 	char dummyline[200];
+  double dummy;
 
 	// Open the file dump.traj
 	FILE *input;
@@ -37,7 +37,6 @@ void read_dump
 		fprintf(stderr, "Failed to open dump.traj\n");
 		exit(1);
 	}
-
 
 	for (f=0; f<frames; f++) {
 		// Start reading dump.traj and ignore the first line
@@ -63,18 +62,47 @@ void read_dump
 		// particle 1, 2, ... N
 		for (i=0; i<N; i++) {
       fscanf(input, "%d ", &id);
-			fscanf(input, "%lf %lf %lf %lf\n", &dummy, \
+			fscanf(input, "%d ", &types[f][id-1]);
+			fscanf(input, "%lf %lf %lf %lf\n", \
 					&x[f][id-1][0], \
           &x[f][id-1][1], \
-					&x[f][id-1][2]); 
+					&x[f][id-1][2], \
+          &dummy); 
 		}
 	}
 
 	fclose(input);
 }
 
+int add(int N, int *arr, int num)
+{
+  int total = 0;
+  for(int i=0; i<N; i++) {
+    if (arr[i] == num)
+      total += 1;
+  }
+  return total;
+}
+
+void select(int frames, int N, int ptype, int **types, double ***X, double ***x) 
+{
+  int f,i,d;
+  for(f=0; f<frames; f++) {
+    int j=0;
+    for(i=0; i<N; i++){
+      if(types[f][i] == ptype) {
+        for(d=0; d<3; d++) {
+          x[f][j][d] = X[f][i][d];
+        }
+      }
+    }
+  }
+}
+
 int main(int argc, char *argv[]) {
 
+  if(argc < 6)
+    printf("not enough commandline arguments");
   // read in the command line arguments:
   // input file name
   const char *filename_in = argv[1];
@@ -107,9 +135,27 @@ int main(int argc, char *argv[]) {
 
   int *t;
   t=(int*)calloc(frames,sizeof(int));
+
+  int **types;
+  types=(int**)calloc(frames,sizeof(int*));
+  for (f=0; f<frames; f++)
+    types[f]=(int*)calloc(N,sizeof(int));
 	
   // read in the data
-  read_dump(filename_in, frames, N, t, box, x);
+  read_dump(filename_in, frames, N, t, types, box, x);
+  printf("dump file read\n");
+  // compute how many atoms in a frame belong in a polymer
+  int n_poly = add(N,types[0],2);
+  // allocate array for only polymers
+  double ***poly;
+  poly=(double***)calloc(frames,sizeof(double**));
+  for(f=0; f<frames; f++) {
+    poly[f]=(double**)calloc(n_poly,sizeof(double*));
+    for(n=0; n<n_poly; n++)
+      poly[f][n]=(double*)calloc(3,sizeof(double));
+  }
+  // select only the polymer atoms to calculate on
+  select(frames, N, 2, types, x, poly);
 
   // calculate the msd
   int to, ff, i, j;
@@ -156,9 +202,15 @@ int main(int argc, char *argv[]) {
   for (f=0; f<frames; f++) {
     for (n=0; n<N; n++)
       free(x[f][n]);
+    for (n=0; n<n_poly; n++)
+      free(poly[f][n]);
+    for (j=0; j<3; j++)
+      free(box[f][j]);
     free(x[f]);
+    free(types[f]);
   }
   free(x);
+  free(types);
 
   // free single arrays
   free(t);
